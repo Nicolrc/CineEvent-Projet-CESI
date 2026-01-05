@@ -1,0 +1,25 @@
+{% extends"base.html.twig" %}
+
+{% block title %} {{ parent() }} > Liste des articless {% endblock %}
+
+{% block body %}
+    <h1>Liste des 20 derniers articles</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Titre</th>
+            <th scope="col">Date de publication</th>
+            <th scope="col">Auteur</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td><a href="Article/show/{{ article.id }}">{{ article.titre }}</a></td>
+                <td>{{ article.DatePublication|date('d/m/Y') }}</a></td>
+                <td>{{ article.Auteur }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
