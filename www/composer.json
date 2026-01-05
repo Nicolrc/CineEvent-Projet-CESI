@@ -1,0 +1,9 @@
+{
+    "require": {
+        "twig/twig": "^3.22",
+        "symfony/mailer": "^7.4",
+        "firebase/php-jwt": "^6.11",
+        "laminas/laminas-config": "^2.5",
+        "mpdf/mpdf": "^8.2"
+    }
+}
