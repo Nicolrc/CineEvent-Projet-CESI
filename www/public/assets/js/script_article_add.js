@@ -1,0 +1,1 @@
+console.log("JS du fichier script_article_add.js")
