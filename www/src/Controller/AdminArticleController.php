@@ -25,10 +25,6 @@ class AdminArticleController extends AbstractController{
             $sqlRepository = null; // On ne fera pas X requetes SQL différentes donc on déclare les variables dès le début pour les utiliser dans la requete SQL
             $nomImage = null;
 
-            //1. Upload Fichier
-            $sqlRepository = null; // On ne fera pas X requetes SQL différentes donc on déclare les variables dès le début pour les utiliser dans la requete SQL
-            $nomImage = null;
-
             if(!empty($_FILES['Image']['name']) ) {
                 //Type MIME
                 $fileMimeType = mime_content_type($_FILES['Image']['tmp_name']);

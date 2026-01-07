@@ -16,6 +16,7 @@ class ArticleController extends AbstractController
     ]);
     }
     public function show(int $id){
+
         $article = Article::SqlGetById($id);
         return $this->twig->render("article/show.html.twig", [
             'article' => $article

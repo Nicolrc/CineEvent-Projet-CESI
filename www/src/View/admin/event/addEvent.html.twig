@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+{% block title %}ADMIN - {{ parent() }} - Ajout d'un événement ciném {% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/style_article_add.css">
+{% endblock %}
+
+{% block body %}
+    <div class="card-container">
+        <div class="card">
+            <h1>Ajout d'un événement cinéma</h1>
+
+            <form method="post" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Saisir le nom de l'événement" name="nom">
+                </div>
+
+                <div class="mb-3">
+                    <textarea placeholder="Saisir une déscription de cet événement" class="form-control" name="description" rows="3"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <input type="date" class="form-control" name="date_evenement">
+                </div>
+
+                <div class="mb-3">
+                    <select class="form-select" name="Auteur">
+                        <option value="Enzo">Enzo</option>
+                        <option value="Bastien">Bastien</option>
+                        <option value="Camille">Camille</option>
+                        <option value="Denis">Denis</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <input type="file" class="custom-file-input" name="Image">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Valider</button>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="/assets/js/script_article_add.js"></script>
+{% endblock %}

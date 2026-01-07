@@ -39,6 +39,7 @@ if($controller != ""){
     }
 }else{
     // Route par défaut (plus tard)
-    $ctrl = new src\Controller\ArticleController();
-    echo $ctrl->index();
+    $ctrl = new src\Controller\AdminEventController();
+    //echo $ctrl->index();
+    echo $ctrl->add();
 }
