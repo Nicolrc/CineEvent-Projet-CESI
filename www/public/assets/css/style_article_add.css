@@ -37,12 +37,50 @@
     background: rgba(255, 255, 255, 0.4);
 
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    transform: translateY(-20px);
 }
 
 .card h1 {
-    color: #2D3C59;
+    color: white;
     font-weight: bold;
     margin-bottom: 30px;
-    text-align: center;
+    text-align: start;
+}
+
+.inputGlobal{
+    /*border: 2px solid rgba(255, 255, 255, 0.9);*/
+    border: none;
+    border-radius: 10px;
+    color: #2D3C59;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.1);
+}
+
+label{
+    color: white;
+}
+
+.btn-valider{
+    background-color: #061E2966;
+    color: white;
+    border: 2px solid #061E29;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.1);
+}
+
+.btn-valider:hover{
+    background-color: #061E29;
+    border: 2px solid #061E29;
+    color: white;
+    box-shadow: 2px 2px 3px 0 rgba(0,0,0,0.1);
+}
+
+
+.custom-file-upload::file-selector-button {
+    background-color: #061E29;
+    color: white;
+}
+
+.custom-file-upload:hover::file-selector-button {
+    background-color: #2D3C59;
+    color: white;
 }

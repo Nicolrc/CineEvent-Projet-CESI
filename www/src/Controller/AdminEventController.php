@@ -76,7 +76,8 @@ class AdminEventController extends AbstractController
             //    ->html($this->twig->render('mail/article.add.html.twig',["envent" => $event]));
             //$mailer->send($email);
 
-            header("location: /AdminEvent/show/{$id}");
+            //header("location: /AdminEvent/show/{$id}");
+            header("Location: /AdminEvent/listEvents");;
             exit();
         }
 
