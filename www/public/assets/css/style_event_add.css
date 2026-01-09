@@ -2,26 +2,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    /* Ta couleur de fond qui prend toute la place */
-    background-image: url("../img/gradient.jpg");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed; /* L'image reste fixe au scroll */
-
-    position: relative;
-    overflow: hidden;
+    min-height: calc(100vh - 70px); /* 100% moins la hauteur de ta navbar */
     padding: 20px;
-}
-
-.card-container::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: inherit;
-    filter: blur(20px);
-    transform: scale(1.1);
-    z-index: 1;
 }
 
 .card {

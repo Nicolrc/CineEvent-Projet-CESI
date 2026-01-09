@@ -1,3 +1,21 @@
-/*h1{
-    background-color: tomato;
-}*/
+.site-bg-container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden; /* Important : cache les débordements */
+}
+
+.site-bg-container::before {
+    content: "";
+    position: fixed;
+    top: -20px;    /* Étendre au-delà des bords */
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background-image: url("../img/gradient.jpg");
+    background-size: cover;
+    background-position: center;
+    filter: blur(20px);
+    z-index: -1;
+    /* Enlevez le transform: scale(1.1) */
+}

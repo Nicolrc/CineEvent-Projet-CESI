@@ -1,0 +1,71 @@
+.event-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.event-card,
+.add-card {
+    height: 400px; /* Hauteur fixe pour toutes les cartes */
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.event-image,
+.event-img {
+    width: 100%;
+    height: 200px; /* Hauteur fixe pour les images */
+    object-fit: cover; /* Important : recadre l'image proprement */
+}
+
+.event-body {
+    flex: 1; /* Prend l'espace restant */
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* Coupe le texte trop long */
+}
+
+.price-badge {
+    display: inline-block;
+    background: #28a745;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.add-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px dashed #ccc;
+    background: #f8f9fa;
+}
+
+.add-card:hover {
+    border-color: #007bff;
+    background: #e9ecef;
+}
