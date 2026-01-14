@@ -1,0 +1,84 @@
+{% extends "base.html.twig" %}
+{% block title %}ADMIN - {{ parent() }} - Ajout d'un événement ciném {% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/style_event_add.css">
+{% endblock %}
+
+{% block body %}
+    <div class="card-container">
+        <div class="card">
+            <h1>Ajout d'un événement cinéma</h1>
+
+            <form method="post" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label>Nom de l'événement</label>
+                    <input type="text" class="form-control inputGlobal" name="nom" value="{{ event.nom }}">
+                </div>
+
+                <div class="mb-3">
+                    <label>Description de l'événement</label>
+                    <textarea class="form-control inputGlobal" name="description" rows="3">{{ event.description }}</textarea>
+                </div>
+
+                <div class="row mb-3 ">
+                    <div class="col-9">
+                        <label>Date de l'événement</label>
+                        <input type="date" class="form-control inputGlobal" name="date_evenement" value="{{ event.dateEvenement|date('Y-m-d') }}">
+                    </div>
+                    <div class="col-3">
+                        <label>Prix de l'événement</label>
+                        <input type="number" class="form-control inputGlobal" name="prix" value="{{ event.prix }}">
+                    </div>
+                </div>
+
+                <div class="row mb-3 ">
+                    <div class="col-6">
+                        <label>Latitude</label>
+                        <input type="number" step="0.000001" min="-90" max="90" class="form-control inputGlobal" name="latitude" value="{{ event.latitude }}">
+                    </div>
+                    <div class="col-6">
+                        <label>Longitude</label>
+                        <input type="number" step="0.000001" min="-90" max="90" class="form-control inputGlobal" name="longitude" value="{{ event.longitude }}">
+                    </div>
+                </div>
+
+                <div class="row mb-3 ">
+                    <div class="col-6">
+                        <label>Nom de la personne à contacter</label>
+                        <input type="text" class="form-control inputGlobal" name="contact_nom" value="{{ event.contactNom }}">
+                    </div>
+                    <div class="col-6">
+                        <label>Mail de la personne à contacter</label>
+                        <input type="email" class="form-control inputGlobal" name="contact_email" value="{{ event.contactEmail }}">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>Image de l'événement</label>
+                    <input type="file" class="form-control inputGlobal custom-file-upload" name="Image">
+                </div>
+
+                <label>Image actuelle :</label>
+                <div class="mb-3 card-image d-flex justify-content-center align-items-center p-3">
+                    {% if event.imageFileName %}
+                        <div class="mb-2">
+                            <img src="/uploads/images/{{ event.imageRepository }}/{{ event.imageFileName }}" style="width: 100px;">
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="d-grid mt-5">
+                    <button type="submit" class="btn btn-valider">Valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="/assets/js/script_article_add.js"></script>
+{% endblock %}

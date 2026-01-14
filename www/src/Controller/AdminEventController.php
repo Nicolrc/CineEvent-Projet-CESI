@@ -83,4 +83,95 @@ class AdminEventController extends AbstractController
 
         return $this->twig->render('admin/event/addEvent.html.twig');
     }
+    public function editEvent(int $id)
+    {
+        $event = CineEvent::SqlGetById($id);
+        if(isset($_POST["nom"])){
+            //1. Upload Fichier
+            $sqlRepository = ($event->getImageRepository() != "") ? $event->getImageRepository() : null;
+            $nomImage = ($event->getImageFileName() != "") ? $event->getImageFileName() : null;
+
+            if(!empty($_FILES['Image']['name']) ) {
+                //Type MIME
+                $fileMimeType = mime_content_type($_FILES['Image']['tmp_name']);
+                $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                //Extension
+                $extension = pathinfo($_FILES['Image']['name'], PATHINFO_EXTENSION);
+                $allowedExtensions = ['jpg', 'gif', 'png', 'jpeg'];
+                // strtolower = on compare ce qui est comparage (JPEG =! jpeg)
+                if (in_array(strtolower($extension), $allowedExtensions) && in_array($fileMimeType, $allowedMimeTypes)) {
+                    //Si image déjà existante alors on supprime
+                    if($sqlRepository!=null and $nomImage!=null){
+                        unlink('./uploads/images/'.$sqlRepository.'/'.$nomImage);
+                    }
+
+                    // Fabrication du répertoire d'accueil façon "Wordpress" (YYYY/MM)
+                    $dateNow = new \DateTime();
+                    $sqlRepository = $dateNow->format('Y/m');
+                    $repository = './uploads/images/' . $dateNow->format('Y/m');
+                    if (!is_dir($repository)) {
+                        mkdir($repository, 0777, true);
+                    }
+                    // Renommage du fichier (d'où l'intéret d'avoir isolé l'extension
+                    $nomImage = md5(uniqid()) . '.' . $extension;
+
+                    //Upload du fichier, voilà c'est fini !
+                    move_uploaded_file($_FILES['Image']['tmp_name'], $repository . '/' . $nomImage);
+                }
+            }
+
+            //Créer un objet event
+            $event->setNom($_POST['nom']);
+            $event->setDescription($_POST['description']);
+            $event->setDateEvenement(new \DateTime($_POST['date_evenement']));
+            $event->setPrix((int)$_POST['prix']);
+            $event->setLatitude((float)$_POST['latitude']);
+            $event->setLongitude((float)$_POST['longitude']);
+            $event->setContactNom($_POST['contact_nom']);
+            $event->setContactEmail($_POST['contact_email']);
+            $event->setImageFileName($nomImage);
+            $event->setImageRepository($sqlRepository);
+
+            //Exécuter la requete SQL d'ajout (model)
+            CineEvent::SqlUpdate($event);
+
+            //Rédiriger l'internaute sur la page liste
+            header("location:/AdminEvent/listEvents");
+
+        }
+        return $this->twig->render('admin/event/updateEvent.html.twig', [
+            'event' => $event,
+        ]);
+    }
+
+    public function delete($id)
+    {
+        //$token = $_GET["token"];
+        //UserController::haveGoodRole(["Administrateur"]);
+        //if($token != $_SESSION["token"]){
+            //header("location: /AdminArticle/list");
+            //return;
+        //}
+        $event = CineEvent::SqlGetById($id);
+        $sqlRepository = ($event->getImageRepository() != "") ? $event->getImageRepository() : null;
+        $nomImage = ($event->getImageFileName() != "") ? $event->getImageFileName() : null;
+        if($sqlRepository!=null and $nomImage!=null){
+            unlink('./uploads/images/'.$sqlRepository.'/'.$nomImage);
+        }
+        CineEvent::SqlDelete($id);
+        header("location:/AdminEvent/listEvents");
+    }
+
+    public function showEvent($id)
+    {
+        $event = CineEvent::SqlGetById($id);
+        if($event == null){
+            header('location: /AdminEvent/listEvents');
+        }
+        return $this->twig->render("admin/event/showEvent.html.twig",
+            [
+                'event' => $event,
+            ]);
+    }
+
 }

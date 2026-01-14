@@ -177,6 +177,7 @@ class CineEvent implements JsonSerializable
                 $enventObj = new CineEvent();
                 $enventObj->setId($eventData['id']);
                 $enventObj->setNom($eventData['nom']);
+                $enventObj->setDescription($eventData['description']);
                 $enventObj->setDateEvenement(new \DateTime($eventData['date_evenement']));
                 $enventObj->setPrix($eventData['prix']);
                 $enventObj->setLatitude($eventData['latitude']);

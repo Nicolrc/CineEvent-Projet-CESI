@@ -1,0 +1,43 @@
+{% extends "base.html.twig" %}
+{% block title %}Création compte - {{ parent() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/style_event_add.css">
+{% endblock %}
+
+{% block body %}
+    <div class="card-container">
+        <div class="card">
+            <h1>Création d'un compte utilisateur</h1>
+
+            <form method="post">
+
+                <div class="mb-3">
+                    <input type="text" class="form-control inputGlobal" placeholder="Votre Nom" name="nom">
+                </div>
+
+                <div class="mb-3">
+                    <input type="text" class="form-control inputGlobal" placeholder="Votre Prénom" name="prenom">
+                </div>
+
+                <div class="mb-3">
+                    <input type="email" class="form-control inputGlobal" placeholder="Votre Email" name="email">
+                </div>
+
+                <div class="mb-3">
+                    <input type="password" class="form-control inputGlobal" placeholder="mot de passe" name="password">
+                </div>
+
+
+                <div class="mb-3">
+                    <select class="form-select inputGlobal" name="roles[]" multiple>
+                        <option value="Administrateur">Administrateur</option>
+                        <option value="Visiteur">Visiteur</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-valider">Valider</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

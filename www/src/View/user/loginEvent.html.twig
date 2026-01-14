@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+{% block title %}Login- {{ parent() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/style_event_add.css">
+{% endblock %}
+
+{% block body %}
+    <div class="card-container">
+        <div class="card">
+            <h1>Login</h1>
+            <form method="post">
+                <div class="mb-3">
+                    <input type="email" class="form-control inputGlobal" placeholder="Votre mail" name="email">
+                </div>
+
+                <div class="mb-3">
+                    <input type="password" class="form-control inputGlobal" placeholder="mot de passe" name="password">
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-valider">Valider</button>
+                </div>
+            </form>
+            <p>Pas encore de compte ? <a href="/UserEvent/createAccount">Créez en un</a></p>
+        </div>
+    </div>
+{% endblock %}

@@ -7,6 +7,7 @@
 
 .event-card,
 .add-card {
+    position: relative;
     height: 400px; /* Hauteur fixe pour toutes les cartes */
     display: flex;
     flex-direction: column;
@@ -68,4 +69,26 @@
 .add-card:hover {
     border-color: #007bff;
     background: #e9ecef;
+}
+
+.btn-suppr {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+
+    width: 45px;
+    height: 45px;
+    background-color: #FF0000;
+    border: 3px solid white;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.2s, transform 0.2s;
 }

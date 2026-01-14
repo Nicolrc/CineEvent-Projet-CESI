@@ -7,9 +7,25 @@
 {% endblock %}
 
 {% block body %}
+{% if session.login is defined %}
+    {% if "Administrateur" in session.login.Roles %}
+        <div class="alert alert-info">Vous êtes connecté en tant qu'<b>Administrateur</b></div>
+    {% else %}
+        <div class="alert alert-secondary">Vous êtes connecté en tant que <b>Visiteur</b></div>
+    {% endif %}
+{% else %}
+    <p>Vous n'êtes pas connecté.</p>
+{% endif %}
+
 <div class="event-card-container">
     {% for event in events %}
     <div class="event-card">
+        <a href="/AdminEvent/delete/{{ event.id }}"
+           class="btn-suppr"
+           onclick="return confirm('Supprimer cet événement ?')">
+            <i class="bi bi-trash"></i>
+        </a>
+
         {% if event.imageFileName %}
         <img src="/uploads/images/{{ event.imageRepository }}/{{ event.imageFileName }}" class="event-image">
         {% else %}
@@ -22,8 +38,8 @@
             <span class="price-badge">{{ event.prix }}€</span>
             <p class="card-text"><i class="bi bi-calendar"></i> {{ event.dateEvenement|date('d/m/Y') }}</p>
             <div class="d-flex justify-content-between mt-3">
-                <a href="/AdminEvent/show/{{ event.id }}" class="btn btn-sm btn-light">Voir</a>
-                <a href="#" class="btn btn-sm btn-light">Modifier</a>
+                <a href="/AdminEvent/showEvent/{{ event.id }}" class="btn btn-sm btn-light">Voir lévénement</a>
+                <a href="/AdminEvent/editEvent/{{ event.id }}" class="btn btn-sm btn-light">Modifier</a>
             </div>
         </div>
     </div>

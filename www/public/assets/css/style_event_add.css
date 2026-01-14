@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 70px); /* 100% moins la hauteur de ta navbar */
+    /*min-height: calc(100vh - 70px);*/
     padding: 20px;
 }
 
@@ -19,6 +19,33 @@
     background: rgba(255, 255, 255, 0.4);
 
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.card-show {
+    max-width: 1300px;
+}
+
+.card-image{
+    width: 100%;
+    /*max-width: 900px;*/
+
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 40px;
+
+    background: rgba(255, 255, 255, 0.4);
+
+    box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.1);
+}
+
+.card-info{
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 20px;
+
+    /*background: rgba(255, 255, 255, 0.4);*/
+
+    box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.1);
 }
 
 .card h1 {
@@ -66,3 +93,8 @@ label{
     background-color: #2D3C59;
     color: white;
 }
+
+/*On définit la hauteur de la carte sinon elle ne s'affiche pas*/
+#map { height: 400px; width: 100%; border-radius: 8px; margin-top: 20px; }
+
+
