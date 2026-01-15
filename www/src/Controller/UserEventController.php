@@ -10,6 +10,8 @@ class UserEventController extends AbstractController
             $user = UserEvent::sqlGetByMail($_POST["email"]);
             if($user != null){
                 if(password_verify($_POST["password"], $user->getPassword())){
+                    $token = bin2hex(random_bytes(16));
+                    $_SESSION['token'] = $token;
                     $_SESSION["login"] = [
                         "Email" => $user->getEmail(),
                         "Roles" => $user->getRoles(),
@@ -27,7 +29,7 @@ class UserEventController extends AbstractController
         return $this->twig->render("user/loginEvent.html.twig");
     }
 
-    public function haveGoodRole(array $goodRole)
+    public static function haveGoodRole(array $goodRole)
     {
         if(!isset($_SESSION["login"])){
             throw new \Exception("Vous devez vous authentifier pour accéder à cette page");
@@ -35,7 +37,7 @@ class UserEventController extends AbstractController
 
         $roleFound = false;
         foreach ($_SESSION["login"]["Roles"] as $role){
-            if($role == $goodRole["Role"]){
+            if(in_array($role, $goodRole)){
                 $roleFound = true;
                 break;
             }
@@ -47,7 +49,8 @@ class UserEventController extends AbstractController
 
     public function logoutEvent(){
         unset($_SESSION["login"]);
-        header("Location:/");
+        header("Location:/AdminEvent/listEvents");
+        exit();
     }
 
     public function createAccount(){

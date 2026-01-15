@@ -1,0 +1,70 @@
+nav{
+    width: 100%;
+    max-width: 1300px;
+    border-radius: 0 0 15px 15px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: transparent;
+    box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.3);
+    color: white;
+}
+
+.menu{
+    text-decoration: none;
+    color: white;
+}
+
+.menu:hover{
+    text-decoration: none;
+    color: #061E29;
+}
+
+.search{
+    border-radius: 10px;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.1);
+    border: 2px solid white;
+    width: 450px;
+    max-width: 100%;
+}
+
+.btn-login{
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #061E29;
+    border: 2px solid #061E29;
+    color: white;
+    width: 120px;
+    max-width: 100%;
+}
+
+.btn-login:hover{
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #061E2966;
+    color: white;
+    border: 2px solid #061E29;
+    width: 120px;
+    max-width: 100%;
+}
+
+.btn-logout{
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #DE1A58;
+    border: 2px solid #DE1A58;
+    color: white;
+    width: 120px;
+    max-width: 100%;
+}
+
+.btn-logout:hover{
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #DE1A5866;
+    color: white;
+    border: 2px solid #DE1A58;
+    width: 120px;
+    max-width: 100%;
+}

@@ -11,18 +11,21 @@ class AdminEventController extends AbstractController
 {
     public function listEvents(){
         $events = CineEvent::SqlGetAll();
-        $token = bin2hex(random_bytes(16));
-        $_SESSION['token'] = $token;
         return $this->twig->render(
             'admin/event/listEvent.html.twig',
             [
                 'events' => $events,
-                'token' => $token
             ]);
     }
 
     public function add(){
+        UserEventController::haveGoodRole(["Administrateur"]);
         if(isset($_POST['nom'])){
+            $token = $_GET["token"] ?? "";
+            if($token != $_SESSION["token"]){
+                header("location: /AdminEvent/listEvent");
+                return;
+            }
             //On met les variable qui vont contenir les image a null dans le cas ou l'utilisateur n'entre pas de d'image
             $sqlRepository = null;
             $nomImage = null;
@@ -77,7 +80,8 @@ class AdminEventController extends AbstractController
             //$mailer->send($email);
 
             //header("location: /AdminEvent/show/{$id}");
-            header("Location: /AdminEvent/listEvents");;
+            header("Location: /AdminEvent/listEvents");
+
             exit();
         }
 
@@ -85,6 +89,12 @@ class AdminEventController extends AbstractController
     }
     public function editEvent(int $id)
     {
+        $token = $_GET["token"];
+        UserEventController::haveGoodRole(["Administrateur"]);
+        if($token != $_SESSION["token"]){
+            header("location: /AdminEvent/listEvent");
+            return;
+        }
         $event = CineEvent::SqlGetById($id);
         if(isset($_POST["nom"])){
             //1. Upload Fichier
@@ -146,12 +156,12 @@ class AdminEventController extends AbstractController
 
     public function delete($id)
     {
-        //$token = $_GET["token"];
-        //UserController::haveGoodRole(["Administrateur"]);
-        //if($token != $_SESSION["token"]){
-            //header("location: /AdminArticle/list");
-            //return;
-        //}
+        $token = $_GET["token"];
+        UserEventController::haveGoodRole(["Administrateur"]);
+        if($token != $_SESSION["token"]){
+            header("location: /AdminEvent/listEvent");
+            return;
+        }
         $event = CineEvent::SqlGetById($id);
         $sqlRepository = ($event->getImageRepository() != "") ? $event->getImageRepository() : null;
         $nomImage = ($event->getImageFileName() != "") ? $event->getImageFileName() : null;
