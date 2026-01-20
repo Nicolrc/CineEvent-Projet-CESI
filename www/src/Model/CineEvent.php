@@ -249,4 +249,28 @@ class CineEvent implements JsonSerializable
             'ImageFileName' => $this->ImageFileName,
         ];
     }
+
+    public static function sqlSearch(string $keyword): array{
+        $requete = BDD::getInstance()->prepare('SELECT * FROM events WHERE nom LIKE :keyword OR description LIKE :keyword ORDER BY id DESC');
+        $requete->bindValue(':keyword','%'.$keyword.'%');
+        $requete->execute();
+        $eventsSql = $requete->fetchAll(\PDO::FETCH_ASSOC);
+        $eventsObjet = [];
+        foreach($eventsSql as $eventSql){
+            $event = new CineEvent();
+            $event->setId($eventSql['id']);
+            $event->setNom($eventSql['nom']);
+            $event->setDescription($eventSql['description']);
+            $event->setDateEvenement(new \DateTime($eventSql['date_evenement']));
+            $event->setPrix($eventSql['prix']);
+            $event->setLatitude($eventSql['latitude']);
+            $event->setLongitude($eventSql['longitude']);
+            $event->setContactNom($eventSql['contact_nom']);
+            $event->setContactEmail($eventSql['contact_email']);
+            $event->setImageRepository($eventSql['ImageRepository']);
+            $event->setImageFileName($eventSql['ImageFileName']);
+            $eventsObjet[] = $event;
+        }
+        return $eventsObjet;
+    }
 }

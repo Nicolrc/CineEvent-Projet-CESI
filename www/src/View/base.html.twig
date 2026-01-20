@@ -32,9 +32,9 @@
             </ul>
         </div>
 
-        <form class="d-flex" method="post" action="/Article/search">
+        <form class="d-flex" method="post" action="/Event/searchEvent">
             <input class="search me-2" type="search" placeholder="Recherchez un événement"
-            name="Search" id="Search" value="{{ keyword is defined ? keyword : "" }}">
+            name="search" id="search" value="{{ keyword is defined ? keyword : "" }}">
         </form>
 
         {% if session.login is defined %}

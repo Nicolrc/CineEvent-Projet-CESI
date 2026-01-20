@@ -30,4 +30,16 @@ class EventController extends AbstractController{
         $nomPdf = $event->getNom() . '.pdf';
         $mpdf->Output(name: $nomPdf, dest: Destination::DOWNLOAD);
     }
+
+    public function searchEvent(){
+        if(isset($_POST['search'])){
+            $events = CineEvent::SqlSearch($_POST['search']);
+            return $this->twig->render("event/searchEvent.html.twig", [
+                "events" => $events,
+                "keyword" => $_POST['search'],
+            ]);
+        }
+        header("location: /");
+        return $this->twig->render("event/searchEvent.html.twig");
+    }
 }

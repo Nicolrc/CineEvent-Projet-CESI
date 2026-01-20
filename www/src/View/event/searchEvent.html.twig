@@ -1,0 +1,34 @@
+
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} > Résultat de la recherche {% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/style_event_list.css">
+{% endblock %}
+
+{% block body %}
+    <h1>Résutats pour la recherche : {{ keyword }}</h1>
+    <div class="event-card-container">
+        {% for event in events %}
+            <div class="event-card">
+
+                {% if event.imageFileName %}
+                    <img src="/uploads/images/{{ event.imageRepository }}/{{ event.imageFileName }}" class="event-image">
+                {% else %}
+                    <div class="event-img d-flex align-items-center justify-content-center bg-dark text-muted">
+                        <i class="bi bi-camera-video fs-1"></i>
+                    </div>
+                {% endif %}
+                <div class="event-body">
+                    <h5 class="card-title">{{ event.nom }}</h5>
+                    <span class="price-badge">{{ event.prix }}€</span>
+                    <p class="card-text"><i class="bi bi-calendar"></i> {{ event.dateEvenement|date('d/m/Y') }}</p>
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="/event/showEvent/{{ event.id }}" class="btn btn-sm btn-light">Voir lévénement</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
