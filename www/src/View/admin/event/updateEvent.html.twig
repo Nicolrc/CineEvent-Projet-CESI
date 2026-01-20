@@ -10,7 +10,7 @@
         <div class="card">
             <h1>Ajout d'un événement cinéma</h1>
 
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" action="/AdminEvent/editEvent/{{ event.id }}?token={{ session.token }}">
 
                 <div class="mb-3">
                     <label>Nom de l'événement</label>

@@ -39,7 +39,7 @@
             <p class="card-text"><i class="bi bi-calendar"></i> {{ event.dateEvenement|date('d/m/Y') }}</p>
             <div class="d-flex justify-content-between mt-3">
                 <a href="/AdminEvent/showEvent/{{ event.id }}" class="btn btn-sm btn-light">Voir lévénement</a>
-                <a href="/AdminEvent/editEvent/{{ event.id }}?token={{ session.token }}" class="btn btn-sm btn-light">Modifier</a>
+                <a href="/AdminEvent/editEvent/{{ event.id }}?token={{ token }}" class="btn btn-sm btn-light">Modifier</a>
             </div>
         </div>
     </div>

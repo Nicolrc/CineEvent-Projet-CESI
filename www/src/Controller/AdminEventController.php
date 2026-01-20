@@ -15,6 +15,7 @@ class AdminEventController extends AbstractController
             'admin/event/listEvent.html.twig',
             [
                 'events' => $events,
+                'token'  => $_SESSION['token'] ?? ''
             ]);
     }
 
@@ -23,7 +24,7 @@ class AdminEventController extends AbstractController
         if(isset($_POST['nom'])){
             $token = $_GET["token"] ?? "";
             if($token != $_SESSION["token"]){
-                header("location: /AdminEvent/listEvent");
+                header("location: /AdminEvent/listEvents");
                 return;
             }
             //On met les variable qui vont contenir les image a null dans le cas ou l'utilisateur n'entre pas de d'image
@@ -68,20 +69,21 @@ class AdminEventController extends AbstractController
             $id = CineEvent::SqlAdd($event);
 
             //Création Email --> a faire une fois que tout foncitonnera correctement
-            //$event->setId($id);
-            //$trspt = Transport::fromDsn("smtp://8ac99290b8a4e8:54b4714bdcc5b5@sandbox.smtp.mailtrap.io:2525");
-            //$mailer = new Mailer($trspt);
+            $event->setId($id);
+            $trspt = Transport::fromDsn("smtp://8ac99290b8a4e8:54b4714bdcc5b5@sandbox.smtp.mailtrap.io:2525");
+            $mailer = new Mailer($trspt);
             //Création Email
-            //$email = (new Email())
-            //    ->from("admin@cesi.local")
-            //    ->to("admin@cesi.local")
-            //    ->subject("Nouvel Article posté")
-            //    ->html($this->twig->render('mail/article.add.html.twig',["envent" => $event]));
-            //$mailer->send($email);
+            $email = (new Email())
+                ->from("admin@cesi.local")
+                ->to("admin@cesi.local")
+                ->subject("Nouvel événement posté")
+                ->html($this->twig->render('mail/event.mail.html.twig',[
+                    "event" => $event,
+                    "session" => ["token" => $_SESSION["token"]]
+                ]));
+            $mailer->send($email);
 
-            //header("location: /AdminEvent/show/{$id}");
-            header("Location: /AdminEvent/listEvents");
-
+            header("location: /AdminEvent/showEvent/{$id}");
             exit();
         }
 
@@ -89,14 +91,17 @@ class AdminEventController extends AbstractController
     }
     public function editEvent(int $id)
     {
-        $token = $_GET["token"];
         UserEventController::haveGoodRole(["Administrateur"]);
-        if($token != $_SESSION["token"]){
-            header("location: /AdminEvent/listEvent");
-            return;
-        }
+
         $event = CineEvent::SqlGetById($id);
         if(isset($_POST["nom"])){
+
+            $token = $_GET["token"] ?? "";
+            if($token != $_SESSION["token"]){
+                header("location: /AdminEvent/listEvents");
+                return;
+            }
+
             //1. Upload Fichier
             $sqlRepository = ($event->getImageRepository() != "") ? $event->getImageRepository() : null;
             $nomImage = ($event->getImageFileName() != "") ? $event->getImageFileName() : null;

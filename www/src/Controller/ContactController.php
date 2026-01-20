@@ -23,6 +23,7 @@ class ContactController extends AbstractController{
             ->html($this->twig->render('mail/contact.html.twig', [
                 'nom' => $_POST["nom"],
                 'message' => $_POST["message"],
+                "session" => ["token" => $_SESSION["token"]]
             ]));
         header("location:/");
 

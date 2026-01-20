@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Simple Transactional Email</title>
-    <style media="all" type="text/css">
+    <style media="all">
         /* -------------------------------------
         GLOBAL RESETS
     ------------------------------------- */
@@ -317,10 +317,12 @@
                         <td class="wrapper">
                             <p>
                             <ul>
-                                <li><span style="font-weight: bold">Evénement :</span> {{ article.Titre }}</li>
-                                <li><span style="font-weight: bold">Auteur :</span> {{ article.Auteur }}</li>
-                                <li><span style="font-weight: bold">Date Publication :</span> {{ article.DatePublication|date("Y-m-d") }}</li>
-                                <li><span style="font-weight: bold">Description :</span> {{ article.Description }}</li>
+                                <li><span style="font-weight: bold">Evénement :</span> {{ event.nom }}</li>
+                                <li><span style="font-weight: bold">Description :</span> {{ event.description }}</li>
+                                <li><span style="font-weight: bold">Date de l'événement :</span> {{ event.dateEvenement|date("Y-m-d") }}</li>
+                                <li><span style="font-weight: bold">Prix de l'événement :</span> {{ event.prix }}</li>
+                                <li><span style="font-weight: bold">Contact de l'événement :</span> {{ event.contactNom }}</li>
+                                <li><span style="font-weight: bold">son mail:</span> {{ event.contactEmail }}</li>
                             </ul>
                             </p>
                             <table role="presentation" class="btn btn-primary">
@@ -330,7 +332,7 @@
                                         <table role="presentation">
                                             <tbody>
                                             <tr>
-                                                <td> <a href="http://www.cesi.local/AdminArticle/edit/{{ article.Id }}" target="_blank">Editer #{{ article.Id }}</a> </td>
+                                                <td> <a href="http://www.cesi.local/AdminEvent/editEvent/{{ event.id }}?token={{ session.token }}" target="_blank">Editer #{{ event.id }}</a> </td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -348,7 +350,7 @@
 
                 <!-- START FOOTER -->
                 <div class="footer">
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                    <table>
                         <tr>
                             <td class="content-block">
                                 <span class="apple-link">Company Inc, 7-11 Commercial Ct, Belfast BT1 2NB</span>
