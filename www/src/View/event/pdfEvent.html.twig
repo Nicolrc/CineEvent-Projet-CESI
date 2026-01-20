@@ -1,0 +1,10 @@
+<h1>{{ event.nom }}</h1>
+<p>
+    {% if file_exists('./uploads/images/'~event.ImageRepository~'/'~event.ImageFileName) and event.ImageFileName != "" %}
+        <img src="/uploads/images/{{ event.ImageRepository }}/{{ event.ImageFileName }}" class="img-thumbnail"/>
+    {% endif %}
+</p>
+<p><strong>Date de l'événement :</strong>{{ event.dateEvenement|date("d/m/Y") }}</p>
+<p><strong>Prix de l'événement :</strong>{{ event.prix }}</p>
+<p><strong>Nom de la personne à contacter :</strong>{{ event.contactNom }}</p>
+<p><strong>Mail de la personne à contacter :</strong>{{ event.contactEmail }}</p>

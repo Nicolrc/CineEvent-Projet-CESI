@@ -1,0 +1,42 @@
+{% extends"base.html.twig" %}
+
+{% block title %} ADMIN - {{ parent() }} > Liste des événements {% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/style_event_list.css">
+{% endblock %}
+
+{% block body %}
+    {% if session.login is defined %}
+        {% if "Administrateur" in session.login.Roles %}
+            <div class="alert alert-info">Vous êtes connecté en tant qu'<b>Administrateur</b></div>
+        {% else %}
+            <div class="alert alert-secondary">Vous êtes connecté en tant que <b>Visiteur</b></div>
+        {% endif %}
+    {% else %}
+        <p>Vous n'êtes pas connecté.</p>
+    {% endif %}
+
+    <div class="event-card-container">
+        {% for event in events %}
+            <div class="event-card">
+
+                {% if event.imageFileName %}
+                    <img src="/uploads/images/{{ event.imageRepository }}/{{ event.imageFileName }}" class="event-image">
+                {% else %}
+                    <div class="event-img d-flex align-items-center justify-content-center bg-dark text-muted">
+                        <i class="bi bi-camera-video fs-1"></i>
+                    </div>
+                {% endif %}
+                <div class="event-body">
+                    <h5 class="card-title">{{ event.nom }}</h5>
+                    <span class="price-badge">{{ event.prix }}€</span>
+                    <p class="card-text"><i class="bi bi-calendar"></i> {{ event.dateEvenement|date('d/m/Y') }}</p>
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="/event/showEvent/{{ event.id }}" class="btn btn-sm btn-light">Voir lévénement</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

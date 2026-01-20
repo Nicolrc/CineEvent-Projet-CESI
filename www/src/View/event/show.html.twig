@@ -1,5 +1,5 @@
 {% extends "base.html.twig" %}
-{% block title %}ADMIN - {{ parent() }} - vue d'un événement {% endblock %}
+{% block title %} Vue d'un événement {% endblock %}
 
 {% block css %}
     <link rel="stylesheet" href="/assets/css/style_event_add.css">
@@ -50,10 +50,11 @@
                     <h3>{{ event.contactEmail }}</h3>
                 </div>
             </div>
+            <a href="/event/pdf/{{ event.id }}">
+                <input type="button" class="btn btn-valider" value="Téléchargez un pdf de l'événement">
+            </a>
         </div>
     </div>
-
-
 {% endblock %}
 
 {% block javascript %}
