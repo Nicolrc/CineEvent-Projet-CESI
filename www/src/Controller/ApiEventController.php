@@ -1,16 +1,40 @@
 <?php
 namespace src\Controller;
 
-use src\Model\Article;
+use src\Model\CineEvent;
 use src\Services\JwtService;
 
-class ApiArticleController{
+class ApiEventController{
     public function __construct(){
         header("Content-type: application/json; charset=utf-8");
     }
 
     public function getAll(){
-        if (!$_SERVER["REQUEST_METHOD"] == "GET") {
+        if(!$_SERVER["REQUEST_METHOD"] == "GET"){
+            header("HTTP/1.1 405 Method Not Allowed");
+            return json_encode([
+                'status' => false,
+                'message' => 'Method Not Allowed'
+            ]);
+        }
+        $jwtresult = JwtService::checkToken();
+        if (!$jwtresult['success']) {
+            // 1. On définit le code d'erreur HTTP (401 = Non autorisé)
+            header("HTTP/1.1 401 Unauthorized");
+
+            // 2. On retourne le message d'erreur du service
+            return json_encode([
+                'status' => false,
+                'message' => $jwtresult['body']
+            ]);
+        }
+        $event = CineEvent::SqlGetAll();
+        return json_encode($event);
+    }
+
+    public function add()
+    {
+        if (!$_SERVER["REQUEST_METHOD"] == "POST") {
             header("HTTP/1.1 405 Method Not Allowed");
             return json_encode([
                 'success' => false,
@@ -19,28 +43,20 @@ class ApiArticleController{
         }
 
         $jwtresult = JwtService::checkToken();
-        if($jwtresult){
+        if (!$jwtresult['success']) {
+            // 1. On définit le code d'erreur HTTP (401 = Non autorisé)
+            header("HTTP/1.1 401 Unauthorized");
 
-        }
-        $articles = Article::SqlGetAll();
-        return json_encode($articles);
-    }
-
-    function add(){
-        if (!$_SERVER["REQUEST_METHOD"] == "POST") {
-            header("HTTP/1.1 405 Method Not Allowed");
+            // 2. On retourne le message d'erreur du service
             return json_encode([
-                'success' => false,
-                'message' => 'Method Not Allowed'
+                'status' => false,
+                'message' => $jwtresult['body']
             ]);
         }
-        //Récupération des données du Body
-        $data = json_decode(file_get_contents("php://input"));
 
-        // Traitement image
+        $data = json_decode(file_get_contents("php://input"));
         $sqlRepository = null;
         $nomImage = null;
-
         if(isset($data->Image)){
             $nomImage = uniqid().'.jpg';
             $dateNow = new \DateTime();
@@ -52,35 +68,35 @@ class ApiArticleController{
             $file = fopen("{$repository}/{$nomImage}", "wb");
             fwrite($file, base64_decode($data->Image));
             fclose($file);
-
         }
-
-        if(empty($data->Titre) || empty($data->Auteur) || empty($data->Description)){
+        if(empty($data->nom) || empty($data->description) || empty($data->prix)){
             header("HTTP/1.1 400 Bad Request");
             return json_encode([
                 'success' => false,
                 'message' => 'Il manque des données obligatoire'
             ]);
         }
-        // Création de l'article + insert en BDD
-        $article = new Article();
-        $article->setTitre($data->Titre);
-        $article->setAuteur($data->Auteur);
-        $article->setDescription($data->Description);
-        $article->setImageRepository($sqlRepository);
-        $article->setImageFileName($nomImage);
-        $article ->setDatePublication(new \DateTime($data->DatePublication));
+        $event = new CineEvent();
+        $event->setNom($data->nom);
+        $event->setDescription($data->description);
+        $event->setPrix($data->prix);
+        $event->setDateEvenement(new \DateTime($data->dateEvenement));
+        $event->setLongitude($data->longitude);
+        $event->setLatitude($data->latitude);
+        $event->setContactNom($data->contactNom);
+        $event->setContactEmail($data->contactEmail);
+        $event->setImageFileName($nomImage);
+        $event->setImageRepository($sqlRepository);
 
-        $id = Article::SqlAdd($article);
+        $id = CineEvent::SqlAdd($event);
         return json_encode([
             'success' => true,
             'id' => $id,
             'message' => 'Article ajouté avec success'
         ]);
     }
-
     public function update($id){
-        if($_SERVER['REQUEST_METHOD'] != 'PUT'){
+        if(!$_SERVER["REQUEST_METHOD"] == "PUT"){
             header("HTTP/1.1 405 Method Not Allowed");
             return json_encode([
                 'success' => false,
@@ -88,25 +104,33 @@ class ApiArticleController{
             ]);
         }
 
+        $jwtresult = JwtService::checkToken();
+        if (!$jwtresult['success']) {
+            // 1. On définit le code d'erreur HTTP (401 = Non autorisé)
+            header("HTTP/1.1 401 Unauthorized");
+
+            // 2. On retourne le message d'erreur du service
+            return json_encode([
+                'status' => false,
+                'message' => $jwtresult['body']
+            ]);
+        }
+
         $data = json_decode(file_get_contents("php://input"));
 
-        // Vérification des données obligatoires
-        if(empty($id) || empty($data->Titre) || empty($data->Auteur) || empty($data->Description)){
+        if(empty($data->id)|| empty($data->nom) || empty($data->description) || empty($data->prix)){
             header("HTTP/1.1 400 Bad Request");
             return json_encode([
                 'success' => false,
                 'message' => 'Données manquantes ou ID invalide'
             ]);
         }
-
-        // Récupération de l'article existant
-        $article = Article::SqlGetById($id);
-
-        if(!$article){
+        $event = CineEvent::SqlGetById($data->id);
+        if(!$event){
             header("HTTP/1.1 404 Not Found");
             return json_encode([
                 'success' => false,
-                'message' => "Article {$id} introuvable"
+                'message' => "event {$id} introuvable"
             ]);
         }
 
@@ -115,15 +139,15 @@ class ApiArticleController{
         // Sinon, on conserve l'image actuelle.
         $sqlRepository = null;
         $nomImage = null;
-        if(isset($data->Image) && !empty($data->Image)){
+        if(isset($data->Image) && !empty($data->Image)) {
 
             // Suppression de l'ancienne image physique
-            $oldRepo = $article->getImageRepository();
-            $oldName = $article->getImageFileName();
+            $oldRepo = $event->getImageRepository();
+            $oldName = $event->getImageFileName();
 
-            if($oldRepo && $oldName){
+            if ($oldRepo && $oldName) {
                 $oldPath = "{$_SERVER['DOCUMENT_ROOT']}/uploads/images/{$oldRepo}/{$oldName}";
-                if(file_exists($oldPath)){
+                if (file_exists($oldPath)) {
                     unlink($oldPath);
                 }
             }
@@ -141,20 +165,18 @@ class ApiArticleController{
             $file = fopen("{$repository}/{$nomImage}", "wb");
             fwrite($file, base64_decode($data->Image));
             fclose($file);
-
         }
 
-        // Mise à jour des autres propriétés de l'objet
-        $article->setTitre($data->Titre)
-            ->setAuteur($data->Auteur)
-            ->setDatePublication(new \DateTime($data->DatePublication))
-            ->setImageRepository($sqlRepository)
-            ->setImageFileName($nomImage)
-            ->setDescription($data->Description);
+        $event->setNom($data->nom);
+        $event->setDescription($data->description);
+        $event->setPrix($data->prix);
+        $event->setDateEvenement(new \DateTime($data->dateEvenement));
+        $event->setLongitude($data->longitude);
+        $event->setLatitude($data->latitude);
+        $event->setContactNom($data->contactNom);
+        $event->setContactEmail($data->contactEmail);
 
-        // Mise à jour Article
-        Article::SqlUpdate($article);
-
+        CineEvent::SqlUpdate($event);
         return json_encode([
             'success' => true,
             'message' => "Article {$id} mis à jour avec succès"
@@ -162,7 +184,7 @@ class ApiArticleController{
     }
 
     public function delete($id){
-        if($_SERVER['REQUEST_METHOD'] != 'DELETE'){
+        if($_SERVER["REQUEST_METHOD"] != "DELETE"){
             header("HTTP/1.1 405 Method Not Allowed");
             return json_encode([
                 'success' => false,
@@ -170,40 +192,46 @@ class ApiArticleController{
             ]);
         }
 
-        if(empty($id)){
-            header("HTTP/1.1 400 Bad Request");
+        $jwtresult = JwtService::checkToken();
+        if (!$jwtresult['success']) {
+            // 1. On définit le code d'erreur HTTP (401 = Non autorisé)
+            header("HTTP/1.1 401 Unauthorized");
+
+            // 2. On retourne le message d'erreur du service
             return json_encode([
-                'success' => false,
-                'message' => 'ID invalide ou manquant'
+                'status' => false,
+                'message' => $jwtresult['body']
             ]);
         }
 
-        //Récupération Article pour supprimer l'image si image il y'a
-        $article = Article::SqlGetById($id);
-        if(!$article){
+        if(empty($id)){
             header("HTTP/1.1 404 Not Found");
             return json_encode([
                 'success' => false,
-                'message' => "Article {$id} introuvable"
+                'message' => "ID invalide ou manquant"
             ]);
         }
-        $imageRepo = $article->getImageRepository();
-        $imageName = $article->getImageFileName();
+        $event = CineEvent::SqlGetById($id);
+        if(!$event){
+            header("HTTP/1.1 404 Not Found");
+            return json_encode([
+                'success' => false,
+                'message' => "event {$id} introuvable"
+            ]);
+        }
+        $imageRepo = $event->getImageRepository();
+        $imageName = $event->getImageFileName();
 
-        if($imageRepo && $imageName){
+        if($imageRepo && $imageName) {
             $fullPath = "{$_SERVER['DOCUMENT_ROOT']}/uploads/images/{$imageRepo}/{$imageName}";
             if(file_exists($fullPath)){
                 unlink($fullPath); // Suppression du fichier
             }
         }
-
-        // Suppression
-        Article::SqlDelete($id);
+        CineEvent::SqlDelete($id);
         return json_encode([
             'success' => true,
             'message' => "Suppression article {$id}"
         ]);
     }
 }
-
-

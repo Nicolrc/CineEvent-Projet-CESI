@@ -2,6 +2,7 @@
 namespace src\Controller;
 
 use src\Model\UserEvent;
+use src\Services\JwtService;
 
 class UserEventController extends AbstractController
 {
@@ -69,5 +70,72 @@ class UserEventController extends AbstractController
         else{
             return $this->twig->render("user/createAccount.html.twig");
         }
+    }
+
+    public function loginjwt()
+    {
+        header("Content-Type: application/json; charset=utf-8");
+
+        if($_SERVER["REQUEST_METHOD"] != "POST"){
+            header("HTTP/1.1 405 Method Not Allowed");
+            return json_encode([
+                "code" => 1,
+                "Message" => "POST Attendu"
+            ]);
+        }
+
+        //Récupération du body en String
+        $data = file_get_contents("php://input");
+        //Conversion du string en JSON
+        $json = json_decode($data);
+
+        if(empty($json)){
+            header("HTTP/1.1 403 Forbiden");
+            return json_encode([
+                "code" => 1,
+                "Message" => "Il faut des données"
+            ]);
+        }
+
+        if(!isset($json->email) || !isset($json->password)){
+            header("HTTP/1.1 403 Forbiden");
+            return json_encode([
+                "code" => 1,
+                "Message" => "Il manque le mail ou le password"
+            ]);
+        }
+        // Récupérer les info de l'utilisateur par son mail
+        $user = UserEvent::SqlGetByMail($json->email);
+        if($user == null){
+            header("HTTP/1.1 403 Forbiden");
+            return json_encode([
+                "code" => 1,
+                "Message" => "User inexistant"
+            ]);
+        }
+
+        // Comparer le mot de pase avec celui hashé en bdd
+        if(!password_verify($json->password, $user->getPassword())){
+            header("HTTP/1.1 403 Forbiden");
+            return json_encode([
+                "code" => 1,
+                "Message" => "Mot de passe invalide"
+            ]);
+        }
+
+        // Retourne JWT
+        $token = JwtService::createToken([
+            "email" => $user->getEmail(),
+            "roles" => $user->getRoles()
+        ]);
+
+        // On affiche le JSON et on STOPPE tout le reste
+        echo json_encode([
+            "success" => true,
+            "data" => [
+                "token" => $token
+            ]
+        ]);
+        exit;
     }
 }

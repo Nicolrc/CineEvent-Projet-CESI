@@ -8,7 +8,7 @@ class JwtService{
     public static String $secretKey = "cesi";
     public static function createToken (array $datas)
     {
-        $issuedAt = new\DateTimeImmutable();
+        $issuedAt = new \DateTimeImmutable();
         $expireAt = $issuedAt->modify("+3 minutes")->getTimestamp();
         $serverName = "cesi.local";
         $data = [
