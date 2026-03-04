@@ -21,10 +21,7 @@
                     <a class="menu" href="/">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="menu" href="/AdminEvent/listEvents">Admin liste</a>
-                </li>
-                <li class="nav-item">
-                    <a class="menu" href="/AdminEvent/add">Admin ajout</a>
+                    <a class="menu" href="/AdminEvent/add">Ajouter</a>
                 </li>
                 <li class="nav-item">
                     <a class="menu" href="/Event/index">Index</a>
@@ -33,6 +30,7 @@
         </div>
 
         <form class="d-flex" method="post" action="/Event/searchEvent">
+            <label for="search" class="visually-hidden">Rechercher un événement</label>
             <input class="search me-2" type="search" placeholder="Recherchez un événement"
             name="search" id="search" value="{{ keyword is defined ? keyword : "" }}">
         </form>

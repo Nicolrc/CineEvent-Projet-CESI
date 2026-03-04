@@ -9,28 +9,28 @@
 {% block body %}
     <div class="card-container">
         <div class="card">
-            <h1>Ajout d'un événement cinéma</h1>
+            <h1>Modification de l'événement {{ event.nom }}</h1>
 
             <form method="post" enctype="multipart/form-data" action="/AdminEvent/editEvent/{{ event.id }}?token={{ session.token }}">
 
                 <div class="mb-3">
-                    <label>Nom de l'événement</label>
-                    <input type="text" class="form-control inputGlobal" name="nom" id="nomEvent" value="{{ event.nom }}">
+                    <label for="nomEvent" class="label-obligatoire">Nom de l'événement</label>
+                    <input type="text" class="form-control inputGlobal" name="nom" id="nomEvent" value="{{ event.nom }}" aria-required="true" required>
                 </div>
 
                 <div class="mb-3">
-                    <label>Description de l'événement</label>
-                    <textarea class="form-control inputGlobal" name="description" rows="3">{{ event.description }}</textarea>
+                    <label for="descEvent" class="label-obligatoire">Description de l'événement</label>
+                    <textarea id="descEvent" class="form-control inputGlobal" name="description" rows="3" aria-required="true" required>{{ event.description }}</textarea>
                 </div>
 
                 <div class="row mb-3 ">
                     <div class="col-9">
-                        <label>Date de l'événement</label>
-                        <input type="date" class="form-control inputGlobal" name="date_evenement" value="{{ event.dateEvenement|date('Y-m-d') }}">
+                        <label for="dateEvent" class="label-obligatoire">Date de l'événement</label>
+                        <input id="dateEvent" type="date" class="form-control inputGlobal" name="date_evenement" value="{{ event.dateEvenement|date('Y-m-d') }}" aria-required="true" required>
                     </div>
                     <div class="col-3">
-                        <label>Prix de l'événement</label>
-                        <input type="number" class="form-control inputGlobal" name="prix" value="{{ event.prix }}">
+                        <label for="prixEvent" class="label-obligatoire">Prix de l'événement</label>
+                        <input id="prixEvent" type="number" class="form-control inputGlobal" name="prix" value="{{ event.prix }}" aria-required="true" required>
                     </div>
                 </div>
 
@@ -43,36 +43,36 @@
 
                 <div class="row mb-3 ">
                     <div class="col-6">
-                        <label>Latitude</label>
-                        <input type="number" id="lat-input" name="latitude" step="0.000001" min="-90" max="90" class="form-control inputGlobal" name="latitude" value="{{ event.latitude }}">
+                        <label for="lat-input" class="label-obligatoire">Latitude</label>
+                        <input type="number" id="lat-input" name="latitude" step="0.000001" min="-90" max="90" class="form-control inputGlobal" name="latitude" value="{{ event.latitude }}" aria-required="true" required>
                     </div>
                     <div class="col-6">
-                        <label>Longitude</label>
-                        <input type="number" id="lng-input" name="longitude" step="0.000001" min="-90" max="90" class="form-control inputGlobal" name="longitude" value="{{ event.longitude }}">
+                        <label for="lng-input" class="label-obligatoire">Longitude</label>
+                        <input type="number" id="lng-input" name="longitude" step="0.000001" min="-90" max="90" class="form-control inputGlobal" name="longitude" value="{{ event.longitude }}" aria-required="true" required>
                     </div>
                 </div>
 
                 <div class="row mb-3 ">
                     <div class="col-6">
-                        <label>Nom de la personne à contacter</label>
-                        <input type="text" class="form-control inputGlobal" name="contact_nom" value="{{ event.contactNom }}">
+                        <label for="nomContact" class="label-obligatoire">Nom de la personne à contacter</label>
+                        <input id="nomContact" type="text" class="form-control inputGlobal" name="contact_nom" value="{{ event.contactNom }}" aria-required="true" required>
                     </div>
                     <div class="col-6">
-                        <label>Mail de la personne à contacter</label>
-                        <input type="email" class="form-control inputGlobal" name="contact_email" value="{{ event.contactEmail }}">
+                        <label for="mailContact" class="label-obligatoire">Mail de la personne à contacter</label>
+                        <input id="mailContact" type="email" class="form-control inputGlobal" name="contact_email" value="{{ event.contactEmail }}" aria-required="true" required>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label>Image de l'événement</label>
-                    <input type="file" class="form-control inputGlobal custom-file-upload" name="Image">
+                    <label for="imageEvent" class="label-obligatoire">Image de l'événement</label>
+                    <input id="imageEvent" type="file" class="form-control inputGlobal custom-file-upload" name="Image">
                 </div>
 
                 <label>Image actuelle :</label>
                 <div class="mb-3 card-image d-flex justify-content-center align-items-center p-3">
                     {% if event.imageFileName %}
                         <div class="mb-2">
-                            <img src="/uploads/images/{{ event.imageRepository }}/{{ event.imageFileName }}" style="width: 100px;">
+                            <img src="/uploads/images/{{ event.imageRepository }}/{{ event.imageFileName }}" style="width: 100px;" alt="Image de l'événement : {{ event.nom }}" >
                         </div>
                     {% endif %}
                 </div>

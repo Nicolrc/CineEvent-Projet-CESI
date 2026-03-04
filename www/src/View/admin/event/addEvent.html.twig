@@ -14,23 +14,23 @@
             <form method="post" enctype="multipart/form-data" action="/AdminEvent/add?token={{ session.token }}">
 
                 <div class="mb-3">
-                    <label>Nom de l'événement</label>
-                    <input type="text" class="form-control inputGlobal" name="nom" id="nomEvent">
+                    <label for="nomEvent" class="label-obligatoire">Nom de l'événement</label>
+                    <input type="text" class="form-control inputGlobal" name="nom" id="nomEvent" aria-required="true" required>
                 </div>
 
                 <div class="mb-3">
-                    <label>Description de l'événement</label>
-                    <textarea class="form-control inputGlobal" name="description" rows="3"></textarea>
+                    <label for="descEvent" class="label-obligatoire">Description de l'événement</label>
+                    <textarea class="form-control inputGlobal" name="description" rows="3" id="descEvent" aria-required="true" required></textarea>
                 </div>
 
                 <div class="row mb-3 ">
                     <div class="col-9">
-                        <label>Date de l'événement</label>
-                        <input type="date" class="form-control inputGlobal" name="date_evenement">
+                        <label for="dateEvent" class="label-obligatoire">Date de l'événement</label>
+                        <input type="date" class="form-control inputGlobal" name="date_evenement" aria-required="true" id="dateEvent" required>
                     </div>
                     <div class="col-3">
-                        <label>Prix de l'événement</label>
-                        <input type="number" class="form-control inputGlobal" name="prix">
+                        <label for="prixEvent" class="label-obligatoire">Prix de l'événement</label>
+                        <input type="number" class="form-control inputGlobal" name="prix" id="prixEvent" aria-required="true" required>
                     </div>
                 </div>
 
@@ -43,29 +43,29 @@
 
                 <div class="row mb-3 ">
                     <div class="col-6">
-                        <label>Latitude</label>
-                        <input type="number" id="lat-input" name="latitude" step="0.000001" min="-90" max="90" class="form-control inputGlobal" name="latitude">
+                        <label for="lat-input" class="label-obligatoire">Latitude</label>
+                        <input type="number" id="lat-input" name="latitude" step="0.000001" min="-90" max="90" class="form-control inputGlobal" aria-required="true" required>
                     </div>
                     <div class="col-6">
-                        <label>Longitude</label>
-                        <input type="number" id="lng-input" name="longitude" step="0.000001" min="-90" max="90" class="form-control inputGlobal" name="longitude">
+                        <label for="lng-input" class="label-obligatoire">Longitude</label>
+                        <input type="number" id="lng-input" name="longitude" step="0.000001" min="-90" max="90" class="form-control inputGlobal" aria-required="true" required>
                     </div>
                 </div>
 
                 <div class="row mb-3 ">
                     <div class="col-6">
-                        <label>Nom de la personne à contacter</label>
-                        <input type="text" class="form-control inputGlobal" name="contact_nom">
+                        <label for="nomContact" class="label-obligatoire">Nom de la personne à contacter</label>
+                        <input type="text" class="form-control inputGlobal" name="contact_nom" id="nomContact" aria-required="true" required>
                     </div>
                     <div class="col-6">
-                        <label>Mail de la personne à contacter</label>
-                        <input type="email" class="form-control inputGlobal" name="contact_email">
+                        <label for="mailContact" class="label-obligatoire">Mail de la personne à contacter</label>
+                        <input type="email" class="form-control inputGlobal" name="contact_email" id="mailContact" aria-required="true" required>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label>Image de l'événement</label>
-                    <input type="file" class="form-control inputGlobal custom-file-upload" name="Image">
+                    <label for="imageEvent" class="label-obligatoire">Image de l'événement</label>
+                    <input type="file" class="form-control inputGlobal custom-file-upload" name="Image" id="imageEvent" aria-required="true" required>
                 </div>
 
                 <div class="d-grid mt-5">

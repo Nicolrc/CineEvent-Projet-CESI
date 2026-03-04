@@ -18,6 +18,11 @@
     transition: transform 0.2s;
 }
 
+.add-card i,
+.add-card p{
+    color: #181818;
+}
+
 .event-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -48,7 +53,7 @@
 
 .price-badge {
     display: inline-block;
-    background: #28a745;
+    background: #0C166E;
     color: white;
     padding: 4px 12px;
     border-radius: 20px;
@@ -63,12 +68,14 @@
     justify-content: center;
     cursor: pointer;
     border: 2px dashed #ccc;
-    background: #f8f9fa;
+    opacity: 80%;
+    background: white;
 }
 
 .add-card:hover {
-    border-color: #007bff;
+    border-color: #0C166E;
     background: #e9ecef;
+    opacity: 80%;
 }
 
 .btn-suppr {

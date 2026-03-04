@@ -10,13 +10,14 @@ nav{
 }
 
 .menu{
+    font-weight: bold;
     text-decoration: none;
-    color: white;
+    color: #181818;
 }
 
 .menu:hover{
     text-decoration: none;
-    color: #061E29;
+    color: white;
 }
 
 .search{

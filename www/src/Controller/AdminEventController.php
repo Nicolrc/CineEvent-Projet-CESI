@@ -20,12 +20,9 @@ class AdminEventController extends AbstractController
     }
 
     public function add(){
-
-
-
         UserEventController::haveGoodRole(["Administrateur"]);
         if(isset($_POST['nom'])){
-            $token = $_POST["token"] ?? "";
+            $token = $_GET["token"] ?? "";
             if($token != $_SESSION["token"]){
                 header("location: /AdminEvent/listEvents");
                 return;

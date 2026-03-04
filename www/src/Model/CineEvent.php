@@ -237,7 +237,7 @@ class CineEvent implements JsonSerializable
     {
         return [
             'id' => $this->id,
-            'nom' => $this->nom,
+            'nomEvent' => $this->nom,
             'description' => $this->description,
             'dateEvenement' => $this->dateEvenement->format('Y-m-d'),
             'prix' => $this->prix,
@@ -245,8 +245,8 @@ class CineEvent implements JsonSerializable
             'longitude' => $this->longitude,
             'contactNom' => $this->contactNom,
             'contactEmail' => $this->contactEmail,
-            'ImageRepository' => $this->ImageRepository,
-            'ImageFileName' => $this->ImageFileName,
+            'imageRepository' => $this->ImageRepository,
+            'imageFileName' => $this->ImageFileName,
         ];
     }
 

@@ -13,7 +13,7 @@
             <div class="mb-3 card-image overflow-hidden p-0">
                 {% if event.imageFileName %}
                     <div class="w-100">
-                        <img src="/uploads/images/{{ event.imageRepository }}/{{ event.imageFileName }}" class="img-fluid w-100">
+                        <img src="/uploads/images/{{ event.imageRepository }}/{{ event.imageFileName }}" class="img-fluid w-100" alt="Image de l'événement : {{ event.nom }}">
                     </div>
                 {% endif %}
             </div>

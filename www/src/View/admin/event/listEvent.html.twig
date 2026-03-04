@@ -16,18 +16,19 @@
 {% else %}
     <p>Vous n'êtes pas connecté.</p>
 {% endif %}
-
+    <h1>Liste des événements</h1>
 <div class="event-card-container">
     {% for event in events %}
     <div class="event-card">
         <a href="/AdminEvent/delete/{{ event.id }}?token={{ session.token }}"
            class="btn-suppr"
-           onclick="return confirm('Supprimer cet événement ?')">
+           onclick="return confirm('Supprimer cet événement ?')"
+           aria-label="Supprimer l'événement {{ event.nom }}">
             <i class="bi bi-trash"></i>
         </a>
 
         {% if event.imageFileName %}
-        <img src="/uploads/images/{{ event.imageRepository }}/{{ event.imageFileName }}" class="event-image">
+        <img src="/uploads/images/{{ event.imageRepository }}/{{ event.imageFileName }}" class="event-image" alt="Image de l'événement : {{ event.nom }}">
         {% else %}
         <div class="event-img d-flex align-items-center justify-content-center bg-dark text-muted">
             <i class="bi bi-camera-video fs-1"></i>
@@ -38,7 +39,7 @@
             <span class="price-badge">{{ event.prix }}€</span>
             <p class="card-text"><i class="bi bi-calendar"></i> {{ event.dateEvenement|date('d/m/Y') }}</p>
             <div class="d-flex justify-content-between mt-3">
-                <a href="/AdminEvent/showEvent/{{ event.id }}" class="btn btn-sm btn-light">Voir lévénement</a>
+                <a href="/event/showEvent/{{ event.id }}" class="btn btn-sm btn-light">Voir lévénement</a>
                 <a href="/AdminEvent/editEvent/{{ event.id }}?token={{ token }}" class="btn btn-sm btn-light">Modifier</a>
             </div>
         </div>

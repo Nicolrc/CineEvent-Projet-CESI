@@ -94,6 +94,16 @@ label{
     color: white;
 }
 
+label{
+    color: #181818;
+}
+
+.label-obligatoire::after {
+    content: " *";
+    color: #e74c3c;
+    font-weight: bold;
+}
+
 /*On définit la hauteur de la carte sinon elle ne s'affiche pas*/
 #map { height: 400px; width: 100%; border-radius: 8px; margin-top: 20px; }
 
