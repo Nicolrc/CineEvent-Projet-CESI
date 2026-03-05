@@ -66,25 +66,41 @@ class AdminEventController extends AbstractController
             $event->setImageFileName($nomImage);
             $event->setImageRepository($sqlRepository);
 
-            $id = CineEvent::SqlAdd($event);
+            try {
+                $id = CineEvent::SqlAdd($event);
 
-            //Création Email --> a faire une fois que tout foncitonnera correctement
-            $event->setId($id);
-            $trspt = Transport::fromDsn("smtp://8ac99290b8a4e8:54b4714bdcc5b5@sandbox.smtp.mailtrap.io:2525");
-            $mailer = new Mailer($trspt);
-            //Création Email
-            $email = (new Email())
-                ->from("admin@cesi.local")
-                ->to("admin@cesi.local")
-                ->subject("Nouvel événement posté")
-                ->html($this->twig->render('mail/event.mail.html.twig',[
-                    "event" => $event,
-                    "session" => ["token" => $_SESSION["token"]]
-                ]));
-            $mailer->send($email);
+                //Création Email --> a faire une fois que tout foncitonnera correctement
+                $event->setId($id);
+                $trspt = Transport::fromDsn("smtp://8ac99290b8a4e8:54b4714bdcc5b5@sandbox.smtp.mailtrap.io:2525");
+                $mailer = new Mailer($trspt);
+                //Création Email
+                $email = (new Email())
+                    ->from("admin@cesi.local")
+                    ->to("admin@cesi.local")
+                    ->subject("Nouvel événement posté")
+                    ->html($this->twig->render('mail/event.mail.html.twig',[
+                        "event" => $event,
+                        "session" => ["token" => $_SESSION["token"]]
+                    ]));
+                $mailer->send($email);
 
-            header("location: /AdminEvent/showEvent/{$id}");
-            exit();
+                $_SESSION['flash_messages'][] = [
+                    'type' => 'success', // Pour la classe Bootstrap text-bg-success
+                    'texte' => 'L\'événement a été ajouté avec succès et le mail envoyé !'
+                ];
+
+                header("location: /AdminEvent/showEvent/{$id}");
+                exit();
+
+            }catch(\Exception $e){
+                $_SESSION['flash_messages'][] = [
+                    'type' => 'danger', // Pour la classe Bootstrap text-bg-danger (rouge)
+                    'texte' => 'Une erreur est survenue lors de l\'ajout : ' . $e->getMessage()
+                ];
+
+                header("location: /AdminEvent/add");
+                exit();
+            }
         }
 
         return $this->twig->render('admin/event/addEvent.html.twig');
@@ -147,12 +163,19 @@ class AdminEventController extends AbstractController
             $event->setImageFileName($nomImage);
             $event->setImageRepository($sqlRepository);
 
-            //Exécuter la requete SQL d'ajout (model)
-            CineEvent::SqlUpdate($event);
-
-            //Rédiriger l'internaute sur la page liste
-            header("location:/AdminEvent/listEvents");
-
+            try{
+                $_SESSION['flash_messages'][] = [
+                    'type' => 'success',
+                    'texte' => 'L\'événement a été modifié!'
+                ];
+                CineEvent::SqlUpdate($event);
+                header("location:/AdminEvent/listEvents");
+            }catch (\Exception $e){
+                $_SESSION['flash_messages'][] = [
+                    'type' => 'danger',
+                    'texte' => 'Une erreur est survenue lors de la modification : ' . $e->getMessage()
+                ];
+            }
         }
         return $this->twig->render('admin/event/updateEvent.html.twig', [
             'event' => $event,
@@ -173,8 +196,22 @@ class AdminEventController extends AbstractController
         if($sqlRepository!=null and $nomImage!=null){
             unlink('./uploads/images/'.$sqlRepository.'/'.$nomImage);
         }
-        CineEvent::SqlDelete($id);
-        header("location:/AdminEvent/listEvents");
+        try {
+            $_SESSION['flash_messages'][] = [
+                'type' => 'success', // Pour la classe Bootstrap text-bg-success
+                'texte' => 'L\'événement a été supprimé avec succès'
+            ];
+            CineEvent::SqlDelete($id);
+            header("location:/AdminEvent/listEvents");
+        }catch (\Exception $e){
+            $_SESSION['flash_messages'][] = [
+                'type' => 'danger', // Pour la classe Bootstrap text-bg-danger (rouge)
+                'texte' => 'Une erreur est survenue lors de la suppression : ' . $e->getMessage()
+            ];
+
+            header("location: /AdminEvent/listEvents");
+            exit();
+        }
     }
 
     public function showEvent($id)

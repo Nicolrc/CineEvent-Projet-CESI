@@ -234,4 +234,19 @@ class ApiEventController{
             'message' => "Suppression article {$id}"
         ]);
     }
+
+    public function getByPage(): string|false
+    {
+        try {
+            $page = (int)($_GET['page'] ?? 0);
+            $limit = (int)($_GET['limit'] ?? 10);
+
+            $event = CineEvent::SqlFindPaginated($page, $limit);
+
+            return json_encode($event);
+        } catch (PDOException $e) {
+            error_log("DB Error in getAll: " . $e->getMessage());
+            return json_encode([]);
+        }
+    }
 }

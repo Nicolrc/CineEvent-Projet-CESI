@@ -273,4 +273,44 @@ class CineEvent implements JsonSerializable
         }
         return $eventsObjet;
     }
+
+    public static function SqlFindPaginated(int $page, int $limit): array
+    {
+        try {
+            $bdd = BDD::getInstance();
+            $offset = ($page - 1) * $limit;
+
+            $stmt = $bdd->prepare("SELECT * FROM events ORDER BY date_evenement ASC LIMIT :limit OFFSET :offset");
+
+            $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+            $stmt->execute();
+
+            $eventsSql = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            $arrayEvents = [];
+
+            foreach ($eventsSql as $eventData) {
+                $eventObj = new CineEvent();
+                $eventObj->setId($eventData['id']);
+                $eventObj->setNom($eventData['nom']);
+                $eventObj->setDescription($eventData['description']);
+                $eventObj->setDateEvenement(new \DateTime($eventData['date_evenement']));
+                $eventObj->setPrix($eventData['prix']);
+                $eventObj->setLatitude($eventData['latitude']);
+                $eventObj->setLongitude($eventData['longitude']);
+                $eventObj->setContactNom($eventData['contact_nom']);
+                $eventObj->setContactEmail($eventData['contact_email']);
+                $eventObj->setImageRepository($eventData['ImageRepository']);
+                $eventObj->setImageFileName($eventData['ImageFileName']);
+
+                $arrayEvents[] = $eventObj;
+            }
+
+            return $arrayEvents;
+
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
+            return [];
+        }
+    }
 }

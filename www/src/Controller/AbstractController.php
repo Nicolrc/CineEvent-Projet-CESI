@@ -20,5 +20,9 @@ abstract class AbstractController
         $this->twig->addFunction($fileExist);
 
         $this->twig->addGlobal('session', $_SESSION);
+
+        if (isset($_SESSION['flash_messages'])) {
+            unset($_SESSION['flash_messages']);
+        }
     }
 }
