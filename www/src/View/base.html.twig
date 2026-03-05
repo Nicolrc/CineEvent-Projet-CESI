@@ -23,9 +23,6 @@
                 <li class="nav-item">
                     <a class="menu" href="/AdminEvent/add">Ajouter</a>
                 </li>
-                <li class="nav-item">
-                    <a class="menu" href="/Event/index">Index</a>
-                </li>
             </ul>
         </div>
 
@@ -39,6 +36,9 @@
             <a class="btn btn-logout" href="/UserEvent/logoutEvent" role="button">Log OUT</a>
         {% else %}
             <a class="btn btn-login" href="/UserEvent/loginEvent" role="button">Log IN</a>
+        {% endif %}
+        {% if isAdmin %}
+        <img class="img-admin" src="/assets/img/directors_chair.png" alt="chaise de réalisateur administrateur">
         {% endif %}
     </div>
 

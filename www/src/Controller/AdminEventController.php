@@ -11,11 +11,13 @@ class AdminEventController extends AbstractController
 {
     public function listEvents(){
         $events = CineEvent::SqlGetAll();
+        $isAdmin = UserEventController::hasRole(["Administrateur"]);
         return $this->twig->render(
             'admin/event/listEvent.html.twig',
             [
                 'events' => $events,
-                'token'  => $_SESSION['token'] ?? ''
+                'token'  => $_SESSION['token'] ?? '',
+                'isAdmin' => $isAdmin,
             ]);
     }
 

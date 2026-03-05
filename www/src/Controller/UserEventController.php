@@ -48,6 +48,22 @@ class UserEventController extends AbstractController
         }
     }
 
+    public static function hasRole(array $goodRole): bool
+    {
+        // Si la session n'existe pas, il n'a pas le rôle
+        if(!isset($_SESSION["login"]) || !isset($_SESSION["login"]["Roles"])){
+            return false;
+        }
+
+        // On cherche si un des rôles de l'utilisateur correspond
+        foreach ($_SESSION["login"]["Roles"] as $role){
+            if(in_array($role, $goodRole)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function logoutEvent(){
         unset($_SESSION["login"]);
         header("Location:/AdminEvent/listEvents");
