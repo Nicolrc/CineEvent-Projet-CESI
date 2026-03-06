@@ -73,12 +73,12 @@ class AdminEventController extends AbstractController
 
                 //Création Email --> a faire une fois que tout foncitonnera correctement
                 $event->setId($id);
-                $trspt = Transport::fromDsn("smtp://8ac99290b8a4e8:54b4714bdcc5b5@sandbox.smtp.mailtrap.io:2525");
+                $trspt = Transport::fromDsn(getenv('MAILER_DSN'));
                 $mailer = new Mailer($trspt);
                 //Création Email
                 $email = (new Email())
-                    ->from("admin@cesi.local")
-                    ->to("admin@cesi.local")
+                    ->from(getenv('FROMMAIL'))
+                    ->to(getenv('TOMAIL'))
                     ->subject("Nouvel événement posté")
                     ->html($this->twig->render('mail/event.mail.html.twig',[
                         "event" => $event,
@@ -87,7 +87,7 @@ class AdminEventController extends AbstractController
                 $mailer->send($email);
 
                 $_SESSION['flash_messages'][] = [
-                    'type' => 'success', // Pour la classe Bootstrap text-bg-success
+                    'type' => 'success',
                     'texte' => 'L\'événement a été ajouté avec succès et le mail envoyé !'
                 ];
 
@@ -96,7 +96,7 @@ class AdminEventController extends AbstractController
 
             }catch(\Exception $e){
                 $_SESSION['flash_messages'][] = [
-                    'type' => 'danger', // Pour la classe Bootstrap text-bg-danger (rouge)
+                    'type' => 'danger',
                     'texte' => 'Une erreur est survenue lors de l\'ajout : ' . $e->getMessage()
                 ];
 

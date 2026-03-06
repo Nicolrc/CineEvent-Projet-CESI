@@ -9,7 +9,7 @@ class JwtService{
     public static function createToken (array $datas)
     {
         $issuedAt = new \DateTimeImmutable();
-        $expireAt = $issuedAt->modify("+3 minutes")->getTimestamp();
+        $expireAt = $issuedAt->modify("+30 minutes")->getTimestamp();
         $serverName = "cesi.local";
         $data = [
             'iat' => $issuedAt->getTimestamp(),

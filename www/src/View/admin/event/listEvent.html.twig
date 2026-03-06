@@ -8,7 +8,14 @@
 
 {% block body %}
 <div class="container-principal container-fluid px-5">
-    <h1>Liste des événements</h1>
+    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-2 mb-4 pt-4">
+        <h1 class="mb-0">Liste des événements</h1>
+        <form method="post" action="/Event/searchEvent">
+            <label for="search" class="visually-hidden">Rechercher un événement</label>
+            <input class="search me-2" type="search" placeholder="Recherchez un événement"
+                   name="search" id="search" value="{{ keyword is defined ? keyword : "" }}">
+        </form>
+    </div>
     <div class="event-card-container">
         {% for event in events %}
             <div class="event-card">
@@ -34,10 +41,10 @@
                         <span class="price-badge">{{ event.prix }}€</span>
                         <p class="card-text"><i class="bi bi-calendar"></i> {{ event.dateEvenement|date('d/m/Y') }}</p>
                     </div>
-                    <div class="d-flex justify-content-between mt-4">
-                        <a href="/event/showEvent/{{ event.id }}" class="btn btn-voir-event">Voir lévénement</a>
+                    <div class="d-flex flex-column flex-md-row gap-2 mt-4">
+                        <a href="/event/showEvent/{{ event.id }}" class="btn btn-voir-event w-100">Voir</a>
                         {% if isAdmin  %}
-                        <a href="/AdminEvent/editEvent/{{ event.id }}?token={{ token }}" class="btn btn-modifier-event">Modifier</a>
+                        <a href="/AdminEvent/editEvent/{{ event.id }}?token={{ token }}" class="btn btn-modifier-event w-100">Modifier</a>
                         {% endif %}
                     </div>
                 </div>

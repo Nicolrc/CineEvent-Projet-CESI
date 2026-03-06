@@ -15,6 +15,9 @@
 </head>
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid px-5">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
                 <li class="nav-item">
@@ -25,20 +28,14 @@
                 </li>
             </ul>
         </div>
-
-        <form class="d-flex" method="post" action="/Event/searchEvent">
-            <label for="search" class="visually-hidden">Rechercher un événement</label>
-            <input class="search me-2" type="search" placeholder="Recherchez un événement"
-            name="search" id="search" value="{{ keyword is defined ? keyword : "" }}">
-        </form>
-
         {% if session.login is defined %}
             <a class="btn btn-logout" href="/UserEvent/logoutEvent" role="button">Log OUT</a>
         {% else %}
             <a class="btn btn-login" href="/UserEvent/loginEvent" role="button">Log IN</a>
         {% endif %}
+
         {% if isAdmin %}
-        <img class="img-admin" src="/assets/img/directors_chair.png" alt="chaise de réalisateur administrateur">
+        <img class="img-admin flex-shrink-0" src="/assets/img/directors_chair.png" alt="chaise de réalisateur administrateur">
         {% endif %}
     </div>
 

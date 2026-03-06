@@ -71,14 +71,14 @@ class UserEventController extends AbstractController
     }
 
     public function createAccount(){
-        if(isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["roles"])){
+        if(isset($_POST["email"]) && isset($_POST["password"])){
             $user = new UserEvent();
             $hash = password_hash($_POST["password"], PASSWORD_BCRYPT, ["cost"=>12]);
             $user->setEmail($_POST["email"])
                 ->setPassword($hash)
                 ->setNom($_POST["nom"])
                 ->setPrenom($_POST["prenom"])
-                ->setRoles($_POST["roles"]);
+                ->setRoles(["Visiteur"]);
             $id = UserEvent::SqlAdd($user);
             header("Location:/UserEvent/loginEvent");
             exit();
